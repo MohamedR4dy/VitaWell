@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VitaWell — Your Health, Reimagined</title>
+
+  <!-- ═══════════════════════════════════════════════════════
+       GOOGLE ANALYTICS 4 — Replace G-XXXXXXXXXX with your
+       actual Measurement ID from GA4 dashboard
+  ═══════════════════════════════════════════════════════ -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', {
+      page_title: document.title,
+      page_location: window.location.href
+    });
+
+    /* ── Helper: fire a GA4 custom event ── */
+    function trackEvent(eventName, params) {
+      if (typeof gtag === 'function') {
+        gtag('event', eventName, params || {});
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-50:  #EAF7F0;
+      --green-100: #C0E8D1;
+      --green-400: #3BB87A;
+      --green-600: #1F8A56;
+      --green-800: #0D5C36;
+      --green-900: #063D23;
+
+      --sand-50:  #FAF8F4;
+      --sand-100: #F0EBE0;
+      --sand-200: #DDD4C1;
+      --sand-400: #B09A7A;
+      --sand-700: #5E4B30;
+
+      --ink: #1A1812;
+      --ink-60: rgba(26,24,18,.6);
+      --ink-20: rgba(26,24,18,.1);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-xl: 40px;
+
+      --ff-display: 'DM Serif Display', serif;
+      --ff-body:    'Instrument Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff-body);
+      background: var(--sand-50);
+      color: var(--ink);
+      line-height: 1.65;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      height: 68px;
+      background: rgba(250,248,244,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--ink-20);
+    }
+    .logo {
+      font-family: var(--ff-display);
+      font-size: 1.5rem;
+      color: var(--green-800);
+      letter-spacing: -.02em;
+    }
+    .logo span { color: var(--green-400); font-style: italic; }
+    nav ul {
+      list-style: none;
+      display: flex; gap: 2rem;
+    }
+    nav ul a {
+      text-decoration: none;
+      color: var(--ink-60);
+      font-size: .9rem;
+      font-weight: 500;
+      transition: color .2s;
+    }
+    nav ul a:hover { color: var(--green-600); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .65rem 1.4rem;
+      border-radius: var(--radius-xl);
+      font-family: var(--ff-body);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: transform .15s, box-shadow .15s, background .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary {
+      background: var(--green-600);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--green-800); }
+    .btn-outline {
+      background: transparent;
+      color: var(--green-600);
+      border: 1.5px solid var(--green-400);
+    }
+    .btn-outline:hover { background: var(--green-50); }
+    .btn-lg { padding: .85rem 2rem; font-size: 1rem; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 5rem 5vw 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: -20% -10%;
+      background: radial-gradient(ellipse 60% 55% at 70% 40%, var(--green-50) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-text { position: relative; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--green-50);
+      border: 1px solid var(--green-100);
+      border-radius: var(--radius-xl);
+      padding: .35rem .9rem;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--green-600);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .eyebrow-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green-400);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.75); }
+    }
+    h1 {
+      font-family: var(--ff-display);
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    h1 em { color: var(--green-600); font-style: italic; }
+    .hero-text p {
+      font-size: 1.1rem;
+      color: var(--ink-60);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .hero-visual {
+      position: relative;
+      display: flex; flex-direction: column; gap: 1.2rem;
+      align-items: flex-end;
+    }
+
+    /* stat cards */
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--ink-20);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1.4rem;
+      display: flex; align-items: center; gap: 1rem;
+      width: 280px;
+      box-shadow: 0 4px 24px rgba(26,24,18,.06);
+      animation: floatUp .6s ease both;
+    }
+    .stat-card:nth-child(1) { animation-delay: .1s; }
+    .stat-card:nth-child(2) { animation-delay: .25s; margin-right: 2rem; }
+    .stat-card:nth-child(3) { animation-delay: .4s; }
+    @keyframes floatUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .stat-icon {
+      width: 46px; height: 46px; flex-shrink: 0;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .stat-icon.green { background: var(--green-50); }
+    .stat-icon.amber { background: #FFF4E0; }
+    .stat-icon.blue  { background: #EEF4FF; }
+    .stat-label { font-size: .75rem; color: var(--ink-60); font-weight: 500; }
+    .stat-value { font-family: var(--ff-display); font-size: 1.45rem; color: var(--ink); }
+
+    /* ── FEATURES ── */
+    section { padding: 6rem 5vw; }
+    .section-tag {
+      font-size: .78rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--green-600);
+      margin-bottom: .75rem;
+    }
+    h2 {
+      font-family: var(--ff-display);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -.025em;
+      margin-bottom: 1rem;
+    }
+    .sub { color: var(--ink-60); font-size: 1.05rem; max-width: 560px; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 3.5rem;
+    }
+    .feature-card {
+      background: #fff;
+      border: 1px solid var(--ink-20);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      transition: transform .2s, box-shadow .2s;
+      cursor: default;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26,24,18,.09);
+    }
+    .feature-emoji {
+      font-size: 1.8rem; margin-bottom: 1rem;
+      display: block;
+    }
+    .feature-card h3 {
+      font-family: var(--ff-display);
+      font-size: 1.2rem;
+      margin-bottom: .5rem;
+    }
+    .feature-card p { font-size: .9rem; color: var(--ink-60); }
+
+    /* ── DOCTORS ── */
+    .doctors { background: var(--sand-100); }
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .doc-card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid var(--ink-20);
+      transition: transform .2s;
+    }
+    .doc-card:hover { transform: translateY(-3px); }
+    .doc-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      font-family: var(--ff-display);
+      font-size: 1.6rem;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+    }
+    .doc-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: .25rem; }
+    .doc-specialty { font-size: .82rem; color: var(--ink-60); margin-bottom: 1rem; }
+    .stars { color: #f5a623; font-size: .85rem; letter-spacing: .05em; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      background: var(--green-800);
+      color: #fff;
+      text-align: center;
+      padding: 5rem 5vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(ellipse 50% 60% at 50% 50%, var(--green-600) 0%, transparent 70%);
+      opacity: .35;
+      pointer-events: none;
+    }
+    .cta-banner h2 { color: #fff; position: relative; }
+    .cta-banner p  { color: rgba(255,255,255,.7); margin: 1rem auto 2.5rem; max-width: 540px; position: relative; }
+    .btn-white {
+      background: #fff;
+      color: var(--green-800);
+    }
+    .btn-white:hover { background: var(--green-50); }
+
+    /* ── NEWSLETTER ── */
+    .newsletter { background: var(--sand-50); }
+    .newsletter-box {
+      max-width: 560px; margin: 0 auto;
+      text-align: center;
+    }
+    .newsletter-form {
+      display: flex; gap: .75rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center;
+    }
+    .newsletter-form input[type="email"] {
+      flex: 1; min-width: 220px;
+      padding: .75rem 1.1rem;
+      border: 1.5px solid var(--ink-20);
+      border-radius: var(--radius-xl);
+      font-family: var(--ff-body);
+      font-size: .95rem;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .newsletter-form input:focus { border-color: var(--green-400); }
+    #nl-msg { font-size: .85rem; color: var(--green-600); margin-top: .75rem; min-height: 1.2em; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--ink-20);
+      padding: 2.5rem 5vw;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+      font-size: .85rem; color: var(--ink-60);
+    }
+    footer .logo { font-size: 1.1rem; }
+
+    /* ── GA4 BADGE ── */
+    .ga4-badge {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      background: #fff;
+      border: 1px solid var(--ink-20);
+      border-radius: var(--radius-md);
+      padding: .65rem 1rem;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--ink-60);
+      display: flex; align-items: center; gap: .5rem;
+      box-shadow: 0 4px 20px rgba(26,24,18,.1);
+      z-index: 200;
+      cursor: default;
+    }
+    .ga4-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #E37400;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .hero { grid-template-columns: 1fr; padding-top: 3rem; }
+      .hero-visual { display: none; }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <div class="logo">Vita<span>Well</span></div>
+  <ul>
+    <li><a href="#features" onclick="trackEvent('nav_click',{link_text:'Features'})">Features</a></li>
+    <li><a href="#doctors"  onclick="trackEvent('nav_click',{link_text:'Doctors'})">Doctors</a></li>
+    <li><a href="#newsletter" onclick="trackEvent('nav_click',{link_text:'Newsletter'})">Newsletter</a></li>
+  </ul>
+  <a href="#newsletter" class="btn btn-primary"
+     onclick="trackEvent('cta_click',{cta_id:'nav_get_started',cta_text:'Get started'})">
+    Get started
+  </a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="eyebrow">
+      <div class="eyebrow-dot"></div>
+      Trusted by 50,000+ patients
+    </div>
+    <h1>Your health,<br /><em>fully in</em><br />your hands.</h1>
+    <p>VitaWell connects you with world-class doctors, tracks your wellness journey, and puts evidence-based guidance at your fingertips — 24 hours a day.</p>
+    <div class="hero-ctas">
+      <a href="#newsletter" class="btn btn-primary btn-lg"
+         onclick="trackEvent('cta_click',{cta_id:'hero_book',cta_text:'Book a consultation'})">
+        Book a consultation
+      </a>
+      <a href="#features" class="btn btn-outline btn-lg"
+         onclick="trackEvent('cta_click',{cta_id:'hero_learn',cta_text:'Learn more'})">
+        Learn more
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="stat-card">
+      <div class="stat-icon green">💚</div>
+      <div>
+        <div class="stat-label">Average Health Score</div>
+        <div class="stat-value">87 / 100</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">🩺</div>
+      <div>
+        <div class="stat-label">Appointments this month</div>
+        <div class="stat-value">2,410</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue">⚡</div>
+      <div>
+        <div class="stat-label">Avg. response time</div>
+        <div class="stat-value">&lt; 4 minutes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section id="features">
+  <div class="section-tag">What we offer</div>
+  <h2>Everything you need<br />to stay healthy</h2>
+  <p class="sub">Seamless tools built around your lifestyle — from daily check-ins to specialist care.</p>
+
+  <div class="features-grid">
+    <div class="feature-card"
+         onmouseenter="trackEvent('feature_hover',{feature:'Instant Consultations'})">
+      <span class="feature-emoji">🩺</span>
+      <h3>Instant Consultations</h3>
+      <p>Connect with a licensed physician in under 5 minutes via video, chat, or phone — any time, any device.</p>
+    </div>
+    <div class="feature-card"
+         onmouseenter="trackEvent('feature_hover',{feature:'Wellness Tracker'})">
+      <span class="feature-emoji">📊</span>
+      <h3>Wellness Tracker</h3>
+      <p>Monitor sleep, nutrition, activity, and vitals with AI-powered insights that adapt to your personal goals.</p>
+    </div>
+    <div class="feature-card"
+         onmouseenter="trackEvent('feature_hover',{feature:'Prescription Delivery'})">
+      <span class="feature-emoji">💊</span>
+      <h3>Prescription Delivery</h3>
+      <p>Get prescriptions reviewed, approved, and delivered to your door — often within the same day.</p>
+    </div>
+    <div class="feature-card"
+         onmouseenter="trackEvent('feature_hover',{feature:'Mental Health Support'})">
+      <span class="feature-emoji">🧠</span>
+      <h3>Mental Health Support</h3>
+      <p>Access therapists, mindfulness coaches, and crisis support in a fully private, judgement-free space.</p>
+    </div>
+    <div class="feature-card"
+         onmouseenter="trackEvent('feature_hover',{feature:'Lab Results'})">
+      <span class="feature-emoji">🔬</span>
+      <h3>Lab Results</h3>
+      <p>Book at-home blood draws and receive clear, doctor-explained results directly in the app.</p>
+    </div>
+    <div class="feature-card"
+         onmouseenter="trackEvent('feature_hover',{feature:'Family Plans'})">
+      <span class="feature-emoji">👨‍👩‍👧</span>
+      <h3>Family Plans</h3>
+      <p>Cover everyone under one subscription. Manage appointments for kids, parents, and partners with ease.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── DOCTORS ── -->
+<section class="doctors" id="doctors">
+  <div class="section-tag">Our specialists</div>
+  <h2>Meet your care team</h2>
+  <p class="sub">Board-certified specialists across 30+ disciplines, available on demand.</p>
+
+  <div class="doctors-grid">
+    <div class="doc-card"
+         onclick="trackEvent('doctor_click',{doctor_name:'Dr. Aisha Noor',specialty:'Cardiology'})">
+      <div class="doc-avatar" style="background: var(--green-600);">AN</div>
+      <h3>Dr. Aisha Noor</h3>
+      <p class="doc-specialty">Cardiology</p>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="doc-card"
+         onclick="trackEvent('doctor_click',{doctor_name:'Dr. Carlos Reyes',specialty:'Neurology'})">
+      <div class="doc-avatar" style="background: #4A6FBF;">CR</div>
+      <h3>Dr. Carlos Reyes</h3>
+      <p class="doc-specialty">Neurology</p>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="doc-card"
+         onclick="trackEvent('doctor_click',{doctor_name:'Dr. Priya Sharma',specialty:'Pediatrics'})">
+      <div class="doc-avatar" style="background: #B05A8A;">PS</div>
+      <h3>Dr. Priya Sharma</h3>
+      <p class="doc-specialty">Pediatrics</p>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="doc-card"
+         onclick="trackEvent('doctor_click',{doctor_name:'Dr. James Owusu',specialty:'Dermatology'})">
+      <div class="doc-avatar" style="background: #C07820;">JO</div>
+      <h3>Dr. James Owusu</h3>
+      <p class="doc-specialty">Dermatology</p>
+      <div class="stars">★★★★☆</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BANNER ── -->
+<section class="cta-banner">
+  <h2>Start your wellness journey today</h2>
+  <p>Join over 50,000 people who trust VitaWell with their health. No insurance needed. Cancel anytime.</p>
+  <a href="#newsletter" class="btn btn-white btn-lg"
+     onclick="trackEvent('cta_click',{cta_id:'banner_cta',cta_text:'Create free account'})">
+    Create free account
+  </a>
+</section>
+
+<!-- ── NEWSLETTER ── -->
+<section class="newsletter" id="newsletter">
+  <div class="newsletter-box">
+    <div class="section-tag">Stay in the loop</div>
+    <h2>Health tips, straight to you</h2>
+    <p class="sub" style="margin: 0 auto;">Get evidence-based wellness advice, product updates, and exclusive offers — once a week, no spam.</p>
+    <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+      <input type="email" id="nl-email" placeholder="your@email.com" required />
+      <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
+    <p id="nl-msg"></p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="logo">Vita<span style="color:var(--green-400);font-style:italic;">Well</span></div>
+  <p>© 2025 VitaWell Inc. — Demo site for GA4 integration.</p>
+  <p>Privacy · Terms · Contact</p>
+</footer>
+
+<!-- ── GA4 Live Indicator ── -->
+<div class="ga4-badge">
+  <div class="ga4-dot"></div>
+  GA4 Active
+</div>
+
+<script>
+  /* ── Newsletter submit ── */
+  function handleNewsletterSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('nl-email').value;
+    const msg   = document.getElementById('nl-msg');
+
+    /* GA4 event: generate_lead */
+    trackEvent('generate_lead', {
+      currency: 'USD',
+      value: 0,
+      form_id: 'newsletter_signup'
+    });
+
+    msg.textContent = '🎉 Thanks! Check your inbox for a confirmation.';
+    document.getElementById('nl-email').value = '';
+
+    /* Also track as sign_up */
+    trackEvent('sign_up', { method: 'newsletter' });
+  }
+
+  /* ── Scroll depth tracking ── */
+  const depthSent = {};
+  window.addEventListener('scroll', () => {
+    const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+    [25, 50, 75, 90].forEach(threshold => {
+      if (pct >= threshold && !depthSent[threshold]) {
+        depthSent[threshold] = true;
+        trackEvent('scroll', { percent_scrolled: threshold });
+      }
+    });
+  });
+
+  /* ── Session start ── */
+  trackEvent('session_start');
+
+  /* ── Time on page (engagement) ── */
+  let start = Date.now();
+  window.addEventListener('beforeunload', () => {
+    const seconds = Math.round((Date.now() - start) / 1000);
+    trackEvent('user_engagement', { engagement_time_msec: seconds * 1000 });
+  });
+</script>
+
+</body>
+</html>
